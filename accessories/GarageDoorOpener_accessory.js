@@ -1,38 +1,38 @@
+//START SETUP
+var garageName = 'Garage Door';
+var uuidTag = 'garage';
+//END SETUP
+
 var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
+var cmd=require('node-cmd');
 
-
-var FAKE_GARAGE = {
+var GARAGE_DOOR = {
   opened: false,
   open: function() {
     console.log("Opening the Garage!");
-    //add your code here which allows the garage to open
-    FAKE_GARAGE.opened = true;
+    cmd.run('sudo python /home/pi/HAP-NodeJS/python/couch_open.py');
+    GARAGE_DOOR.opened = true;
   },
   close: function() {
     console.log("Closing the Garage!");
-    //add your code here which allows the garage to close
-    FAKE_GARAGE.opened = false;
+    cmd.run('sudo python /home/pi/HAP-NodeJS/python/couch_close.py');
+    GARAGE_DOOR.opened = false;
   },
   identify: function() {
-    //add your code here which allows the garage to be identified
     console.log("Identify the Garage");
-  },
-  status: function(){
-    //use this section to get sensor values. set the boolean FAKE_GARAGE.opened with a sensor value.
-    console.log("Sensor queried!");
-    //FAKE_GARAGE.opened = true/false;
+    cmd.run('sudo python /home/pi/HAP-NodeJS/python.couch_init.py');
   }
 };
 
-var garageUUID = uuid.generate('hap-nodejs:accessories:'+'GarageDoor');
-var garage = exports.accessory = new Accessory('Garage Door', garageUUID);
+var garageUUID = uuid.generate('hap-nodejs:accessories:'+uuidTag);
+var garage = exports.accessory = new Accessory(garageName, garageUUID);
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
 garage.username = "C1:5D:3F:EE:5E:FA"; //edit this if you use Core.js
-garage.pincode = "031-45-154";
+garage.pincode = "031-45-157";
 
 garage
   .getService(Service.AccessoryInformation)
@@ -41,7 +41,7 @@ garage
   .setCharacteristic(Characteristic.SerialNumber, "TW000165");
 
 garage.on('identify', function(paired, callback) {
-  FAKE_GARAGE.identify();
+  GARAGE_DOOR.identify();
   callback();
 });
 
@@ -52,14 +52,14 @@ garage
   .on('set', function(value, callback) {
 
     if (value == Characteristic.TargetDoorState.CLOSED) {
-      FAKE_GARAGE.close();
+      GARAGE_DOOR.close();
       callback();
       garage
         .getService(Service.GarageDoorOpener)
         .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
     }
     else if (value == Characteristic.TargetDoorState.OPEN) {
-      FAKE_GARAGE.open();
+      GARAGE_DOOR.open();
       callback();
       garage
         .getService(Service.GarageDoorOpener)
@@ -67,16 +67,14 @@ garage
     }
   });
 
-
 garage
   .getService(Service.GarageDoorOpener)
   .getCharacteristic(Characteristic.CurrentDoorState)
   .on('get', function(callback) {
 
     var err = null;
-    FAKE_GARAGE.status();
 
-    if (FAKE_GARAGE.opened) {
+    if (GARAGE_DOOR.opened) {
       console.log("Query: Is Garage Open? Yes.");
       callback(err, Characteristic.CurrentDoorState.OPEN);
     }
