@@ -31,7 +31,7 @@ var COUCH = {
         // trigger move_couch.py with duration and direction
         try {
             console.log('attempting cmd ' + 'sudo python ./python/couch_move_test.py ' + duration + ' ' + directionOpen);
-            cmd.get('sudo python ./python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
+            cmd.get('sudo python ./python/right_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
                 if(err) console.error(err);
                 console.log(str);
             });
