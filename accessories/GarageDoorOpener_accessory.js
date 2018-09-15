@@ -23,7 +23,6 @@ var GARAGE_DOOR = {
   },
   identify: function() {
     console.log("Identify the Garage");
-    cmd.run('sudo python /home/pi/HAP-NodeJS/python.couch_init.py');
   }
 };
 
