@@ -30,8 +30,8 @@ var COUCH = {
         if (!value || value === 100) duration++
         // trigger move_couch.py with duration and direction
         try {
-            console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
-            cmd.get('python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
+            console.log('attempting cmd ' + 'sudo python ../python/couch_move_test.py ' + duration + ' ' + directionOpen);
+            cmd.get('sudo python ../python/couch_move_test.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
                 if(err) console.error(err);
                 console.log(str);
             });
