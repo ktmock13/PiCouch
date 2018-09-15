@@ -1,10 +1,9 @@
 // Couch accessory
-
+var cmd = require('node-cmd');
 var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
-var cmd = require('node-cmd');
 
 // here's a fake hardware device that we'll expose to HomeKit
 var COUCH = {
@@ -28,15 +27,16 @@ var COUCH = {
             duration += COUCH.openingOffset * (duration/COUCH.secondsToComplete);
         }
 
-        duration = Math.round(duration * 100) / 100;
-
         // to be sure it goes all the way, add 1 sec
-        if(!value || value === 100) duration++
+        if(!value || value === 100) duration += 1.00;
+
+        let durationR = Math.round(duration * 100) / 100;
 
         // trigger move_couch.py with duration and direction
         try {
-            console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
-            cmd.get('sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
+            console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + durationR + ' ' + directionOpen);
+            cmd.get('python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + durationR + ' ' + directionOpen, function (err, str, stderr) {
+                if(err) console.error(err);
                 console.log(str);
             });
         } catch(err) {
