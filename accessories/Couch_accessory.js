@@ -4,7 +4,7 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
-
+var cmd = require('node-cmd');
 
 // here's a fake hardware device that we'll expose to HomeKit
 var COUCH = {
