@@ -50,7 +50,7 @@ var COUCH = {
 }
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our couch.
-var couch = exports.accessory = new Accessory('Couch', uuid.generate('hap-nodejs:accessories:Couch'));
+var couch = exports.accessory = new Accessory('CouchLeft', uuid.generate('hap-nodejs:accessories:CouchLeft'));
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
 couch.username = "1A:2B:3C:4D:5F:FF";
@@ -71,7 +71,7 @@ couch.on('identify', function (paired, callback) {
 // Add the actual Window Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 couch
-    .addService(Service.Window, "Couch") 
+    .addService(Service.Window, "CouchLeft") 
     .getCharacteristic(Characteristic.TargetPosition)
     .on('set', function (value, callback) {
         COUCH.setPosition(value);
