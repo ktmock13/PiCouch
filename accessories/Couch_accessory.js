@@ -18,24 +18,20 @@ var COUCH = {
         const directionOpen = moveDifference < 0; // ex: asked for 70% while the couch is @ 60%, -10 means move open more.
 
         // round absolute value of percent, then multiply by full motion time to get seconds to move
-        let duration = COUCH.secondsToComplete * (Math.abs(moveDifference) / 100)
+        let duration = Math.round(COUCH.secondsToComplete * (Math.abs(moveDifference) / 100) * 100) / 100;
 
         // account for slop in the timing
 
         // since the couch opens slower
         if (directionOpen) {
-            duration += COUCH.openingOffset * (duration/COUCH.secondsToComplete);
+            duration += COUCH.openingOffset * (duration / COUCH.secondsToComplete);
         }
-
         // to be sure it goes all the way, add 1 sec
-        if(!value || value === 100) duration += 1.00;
-
-        let durationR = Math.round(duration * 100) / 100;
-
+        if (!value || value === 100) duration++
         // trigger move_couch.py with duration and direction
         try {
-            console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + durationR + ' ' + directionOpen);
-            cmd.get('python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + durationR + ' ' + directionOpen, function (err, str, stderr) {
+            console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
+            cmd.get('python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
                 if(err) console.error(err);
                 console.log(str);
             });
