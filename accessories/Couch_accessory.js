@@ -19,7 +19,7 @@ var COUCH = {
         const directionOpen = moveDifference < 0; // ex: asked for 70% while the couch is @ 60%, -10 means move open more.
 
         // round absolute value of percent, then multiply by full motion time to get seconds to move
-        let duration = Math.round(COUCH.secondsToComplete * (Math.abs(moveDifference) / 100) * 100) / 100;
+        let duration = COUCH.secondsToComplete * (Math.abs(moveDifference) / 100)
 
         // account for slop in the timing
 
@@ -27,6 +27,9 @@ var COUCH = {
         if (directionOpen) {
             duration += COUCH.openingOffset * (duration/COUCH.secondsToComplete);
         }
+
+        duration = Math.round(duration * 100) / 100;
+
         // to be sure it goes all the way, add 1 sec
         if(!value || value === 100) duration++
 
