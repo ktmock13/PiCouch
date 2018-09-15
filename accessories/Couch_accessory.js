@@ -36,7 +36,9 @@ var COUCH = {
         // trigger move_couch.py with duration and direction
         try {
             console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
-            cmd.run('sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
+            cmd.get('sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
+                console.log(str);
+            });
         } catch(err) {
             console.error(err);
         }
