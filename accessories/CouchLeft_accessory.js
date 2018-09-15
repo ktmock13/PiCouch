@@ -1,10 +1,9 @@
 // Couch accessory
-
+var cmd = require('node-cmd');
 var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
-
 
 // here's a fake hardware device that we'll expose to HomeKit
 var COUCH = {
@@ -25,13 +24,20 @@ var COUCH = {
 
         // since the couch opens slower
         if (directionOpen) {
-            duration += COUCH.openingOffset * (duration/COUCH.secondsToComplete);
+            duration += COUCH.openingOffset * (duration / COUCH.secondsToComplete);
         }
         // to be sure it goes all the way, add 1 sec
-        if(!value || value === 100) duration++
-
+        if (!value || value === 100) duration++
         // trigger move_couch.py with duration and direction
-        cmd.run('sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
+        try {
+            console.log('attempting cmd ' + 'sudo python ./python/couch_move_test.py ' + duration + ' ' + directionOpen);
+            cmd.get('sudo python ./python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
+                if(err) console.error(err);
+                console.log(str);
+            });
+        } catch(err) {
+            console.error(err);
+        }
 
         // set new couch position
         COUCH.position = value;
@@ -44,7 +50,7 @@ var COUCH = {
 }
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our couch.
-var couch = exports.accessory = new Accessory('Couch', uuid.generate('hap-nodejs:accessories:Couch'));
+var couch = exports.accessory = new Accessory('CouchLeft', uuid.generate('hap-nodejs:accessories:CouchLeft'));
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
 couch.username = "1A:2B:3C:4D:5F:FF";
@@ -62,14 +68,14 @@ couch.on('identify', function (paired, callback) {
 });
 
 
-// Add the actual Fan Service and listen for change events from iOS.
+// Add the actual Window Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 couch
-    .addService(Service.Window, "Couch") // services exposed to the user should have "names" like "Fake Light" for us
+    .addService(Service.Window, "CouchLeft") 
     .getCharacteristic(Characteristic.TargetPosition)
     .on('set', function (value, callback) {
         COUCH.setPosition(value);
-        callback(); // Our fake Fan is synchronous - this value has been successfully set
+        callback(); // Couch is synchronous - this value has been successfully set
 
         //tell Homekit about the new current position
         couch
