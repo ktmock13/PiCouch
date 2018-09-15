@@ -31,7 +31,12 @@ var COUCH = {
         if(!value || value === 100) duration++
 
         // trigger move_couch.py with duration and direction
-        cmd.run('sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
+        try {
+            console.log('attempting cmd ' + 'sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
+            cmd.run('sudo python /home/pi/HAP-NodeJS/python/left_couch_move.py ' + duration + ' ' + directionOpen);
+        } catch(err) {
+            console.error(err);
+        }
 
         // set new couch position
         COUCH.position = value;
@@ -62,14 +67,14 @@ couch.on('identify', function (paired, callback) {
 });
 
 
-// Add the actual Fan Service and listen for change events from iOS.
+// Add the actual Window Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 couch
-    .addService(Service.Window, "Couch") // services exposed to the user should have "names" like "Fake Light" for us
+    .addService(Service.Window, "Couch") 
     .getCharacteristic(Characteristic.TargetPosition)
     .on('set', function (value, callback) {
         COUCH.setPosition(value);
-        callback(); // Our fake Fan is synchronous - this value has been successfully set
+        callback(); // Couch is synchronous - this value has been successfully set
 
         //tell Homekit about the new current position
         couch
