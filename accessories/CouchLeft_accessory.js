@@ -7,8 +7,8 @@ var uuid = require('../').uuid;
 
 // here's a fake hardware device that we'll expose to HomeKit
 var COUCH = {
-    secondsToComplete: 6,
-    openingOffset: 1,
+    secondsToComplete: 8,
+    openingOffset: 2,
     position: 0,
     setPosition: function (value) {
 
