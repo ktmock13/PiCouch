@@ -44,16 +44,8 @@ var COUCH = {
 
     },
     identify: function () {
-        //put your code here to identify the couch
+        //put your code here to identify the fan
         console.log("Couch Identified!");
-        try {
-            cmd.get('sudo python ./python/left_relay_init.py ', function (err, str, stderr) {
-                if (err) console.error(err);
-                // console.log(str);
-            });
-        } catch (err) {
-            console.error(err);
-        }
     }
 }
 
