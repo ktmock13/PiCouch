@@ -15,7 +15,7 @@ var COUCH = {
         // if postition is 100, or 0 go a bit longer to ensure closed/open fully
         // console.log("Setting couch position to %s percent", value);
         const moveDifference = COUCH.position - value;
-        const directionOpen = !(moveDifference < 0); // ex: asked for 70% while the couch is @ 60%, -10 means move open more.
+        const directionOpen = moveDifference < 0; // ex: asked for 70% while the couch is @ 60%, -10 means move open more.
 
         // round absolute value of percent, then multiply by full motion time to get seconds to move
         let duration = Math.round(COUCH.secondsToComplete * (Math.abs(moveDifference) / 100) * 100) / 100;

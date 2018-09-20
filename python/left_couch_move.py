@@ -13,7 +13,7 @@ GPIO.setup(closeRelay, GPIO.OUT)
 duration = float(sys.argv[1])
 opening = sys.argv[2] in ['true', 'True', '1', 'TRUE']
 
-relay = openRelay if opening else closeRelay
+relay = openRelay if not opening else closeRelay #not sure how but homekit decided to flip this device 
 
 #start
 GPIO.output(relay, GPIO.HIGH)
