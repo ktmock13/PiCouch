@@ -13,7 +13,7 @@ var COUCH = {
     setPosition: function (value) {
 
         // if postition is 100, or 0 go a bit longer to ensure closed/open fully
-        console.log("Setting couch position to %s percent", value);
+        // console.log("Setting couch position to %s percent", value);
         const moveDifference = COUCH.position - value;
         const directionOpen = moveDifference < 0; // ex: asked for 70% while the couch is @ 60%, -10 means move open more.
 
@@ -30,10 +30,10 @@ var COUCH = {
         if (!value || value === 100) duration++
         // trigger move_couch.py with duration and direction
         try {
-            console.log('attempting cmd ' + 'sudo python ./python/couch_move_test.py ' + duration + ' ' + directionOpen);
+            // console.log('attempting cmd ' + 'sudo python ./python/couch_move_test.py ' + duration + ' ' + directionOpen);
             cmd.get('sudo python ./python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
                 if(err) console.error(err);
-                console.log(str);
+                // console.log(str);
             });
         } catch(err) {
             console.error(err);
