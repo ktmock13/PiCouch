@@ -4,8 +4,8 @@ import sys
 
 #setup
 GPIO.setmode(GPIO.BOARD)
-openRelay=16
-closeRelay=15
+openRelay=15
+closeRelay=16
 GPIO.setup(openRelay, GPIO.OUT)
 GPIO.setup(closeRelay, GPIO.OUT)
 
