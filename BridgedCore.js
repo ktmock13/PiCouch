@@ -12,7 +12,7 @@ console.log("HAP-NodeJS starting...");
 storage.initSync();
 
 // Start by creating our Bridge which will host all loaded Accessories
-var bridge = new Bridge('Node Bridge', uuid.generate("Node Bridge"));
+var bridge = new Bridge('Couch Bridge', uuid.generate("Node Bridge"));
 
 // Listen for bridge identification event
 bridge.on('identify', function(paired, callback) {
