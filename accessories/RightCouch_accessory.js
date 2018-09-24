@@ -50,7 +50,7 @@ var COUCH = {
 }
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our couch.
-var couch = exports.accessory = new Accessory('CouchRight', uuid.generate('hap-nodejs:accessories:CouchRight'));
+var couch = exports.accessory = new Accessory('RightCouch', uuid.generate('hap-nodejs:accessories:RightCouch'));
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
 couch.username = "1A:2B:3C:4D:5E:6F";
@@ -68,18 +68,14 @@ couch.on('identify', function (paired, callback) {
 });
 
 
-// Add the actual Window Service and listen for change events from iOS.
+// Add the actual Lightbulb Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 couch
-    .addService(Service.Window, "CouchRight") 
-    .getCharacteristic(Characteristic.TargetPosition)
+    .addService(Service.Lightbulb, "RightCouch")
+    .getCharacteristic(Characteristic.Brightness)
     .on('set', function (value, callback) {
         COUCH.setPosition(value);
         callback(); // Couch is synchronous - this value has been successfully set
-
-        //tell Homekit about the new current position
-        couch
-            .getService(Service.Window)
-            .setCharacteristic(Characteristic.CurrentPosition, value)
     });
+
 
