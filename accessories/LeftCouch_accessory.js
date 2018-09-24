@@ -32,10 +32,10 @@ var COUCH = {
         try {
             // console.log('attempting cmd ' + 'sudo python ./python/couch_move_test.py ' + duration + ' ' + directionOpen);
             cmd.get('sudo python ./python/left_couch_move.py ' + duration + ' ' + directionOpen, function (err, str, stderr) {
-                if(err) console.error(err);
+                if (err) console.error(err);
                 // console.log(str);
             });
-        } catch(err) {
+        } catch (err) {
             console.error(err);
         }
 
@@ -53,8 +53,8 @@ var COUCH = {
 var couch = exports.accessory = new Accessory('LeftCouch', uuid.generate('hap-nodejs:accessories:LeftCouch'));
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
-couch.username = "1A:2B:3C:4D:5F:FF";
-couch.pincode = "031-45-159";
+couch.username = "1A:2B:3C:4E:5F:EF";
+couch.pincode = "031-45-999";
 
 // set some basic properties (these values are arbitrary and setting them is optional)
 couch
@@ -71,15 +71,10 @@ couch.on('identify', function (paired, callback) {
 // Add the actual Window Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 couch
-    .addService(Service.WindowCovering, "LeftCouch") 
-    .getCharacteristic(Characteristic.TargetPosition)
+    .addService(Service.Lightbulb, "LeftCouch")
+    .getCharacteristic(Characteristic.Brightness)
     .on('set', function (value, callback) {
         COUCH.setPosition(value);
         callback(); // Couch is synchronous - this value has been successfully set
-
-        //tell Homekit about the new current position
-        couch
-            .getService(Service.Window)
-            .setCharacteristic(Characteristic.CurrentPosition, value)
     });
 
