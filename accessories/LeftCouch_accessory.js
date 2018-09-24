@@ -68,7 +68,7 @@ couch.on('identify', function (paired, callback) {
 });
 
 
-// Add the actual Window Service and listen for change events from iOS.
+// Add the actual Lightbulb Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 couch
     .addService(Service.Lightbulb, "LeftCouch")
