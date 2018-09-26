@@ -41,14 +41,6 @@ var COUCH = {
 
         // set new couch position
         COUCH.position = value;
-
-    },
-    setOpen: function (open) {
-        if (open) {
-            COUCH.setPosition(100);
-        } else {
-            COUCH.setPosition(0);
-        }
     },
     identify: function () {
         //put your code here to identify the fan
@@ -89,6 +81,10 @@ couch
     .addService(Service.Lightbulb, "LeftCouch") // services exposed to the user should have "names" like "Light" for this case
     .getCharacteristic(Characteristic.On)
     .on('set', function (value, callback) {
-        COUCH.setOpen(value);
+        if(value){
+            COUCH.setPosition(100);
+        } else {
+            COUCH.setPosition(0);
+        }
         callback();
     })
