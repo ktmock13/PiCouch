@@ -45,9 +45,9 @@ var COUCH = {
     },
     setOpen: function (open) {
         if (open) {
-            this.setPosition(100);
+            COUCH.setPosition(100);
         } else {
-            this.setPosition(0);
+            COUCH.setPosition(0);
         }
     },
     identify: function () {
