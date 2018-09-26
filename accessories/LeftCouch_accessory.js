@@ -43,6 +43,13 @@ var COUCH = {
         COUCH.position = value;
 
     },
+    setOpen: function (open) {
+        if (open) {
+            this.setPosition(100);
+        } else {
+            this.setPosition(0);
+        }
+    },
     identify: function () {
         //put your code here to identify the fan
         console.log("Couch Identified!");
@@ -78,3 +85,10 @@ couch
         callback(); // Couch is synchronous - this value has been successfully set
     });
 
+couch
+    .addService(Service.Lightbulb, "LeftCouch") // services exposed to the user should have "names" like "Light" for this case
+    .getCharacteristic(Characteristic.On)
+    .on('set', function (value, callback) {
+        COUCH.setOpen(value);
+        callback();
+    })
