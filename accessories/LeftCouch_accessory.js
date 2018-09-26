@@ -27,7 +27,7 @@ var COUCH = {
             duration += COUCH.openingOffset * (duration / COUCH.secondsToComplete);
         }
         // to be sure it goes all the way, add 1 sec
-        if (!value || value === 100) duration++
+        if (value <= 1 || value === 100) duration++
         // trigger move_couch.py with duration and direction
         try {
             // console.log('attempting cmd ' + 'sudo python ./python/couch_move_test.py ' + duration + ' ' + directionOpen);
@@ -76,15 +76,3 @@ couch
         COUCH.setPosition(value);
         callback(); // Couch is synchronous - this value has been successfully set
     });
-
-couch
-    .addService(Service.Lightbulb, "LeftCouch") // services exposed to the user should have "names" like "Light" for this case
-    .getCharacteristic(Characteristic.On)
-    .on('set', function (value, callback) {
-        if(value){
-            COUCH.setPosition(100);
-        } else {
-            COUCH.setPosition(0);
-        }
-        callback();
-    })
